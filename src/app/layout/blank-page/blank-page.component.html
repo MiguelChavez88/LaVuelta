@@ -1,0 +1,30 @@
+<div class="panel panel-primary">
+    <div class="panel-heading"
+         style="font-size:large">
+    </div>
+
+    <div class="panel-body">
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <td>Shipmentno</td>
+                    <td>Linea Producto</td>
+                    <td>Via de Transportetd</td>
+                    <td>Destino</td>
+                    <td>fecha Transaccion</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr  *ngFor='let item of Ck_InvoiceList'>
+                    <td>{{ item.shipmentno}}</td>
+                    <td>{{ item.lineaProductoId }}</td>
+                    <td>{{ item.viaTransporteId }}</td>
+                       <td>{{ item.destinoId }}</td>
+                    <td>{{ item.fechaTransaccion }}</td>
+                 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
