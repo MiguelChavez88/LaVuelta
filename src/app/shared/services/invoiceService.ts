@@ -33,6 +33,61 @@ export class ApiServiceProxy {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:56648";
     }
 
+    getPaginatedInvoices(indice: number, tamanoPagina: number): Observable<CK_Header807[]> {
+        let url_ = this.baseUrl + "/api/Invoice/GetPaginatedInvoices?";
+        if (indice === undefined || indice === null)
+            throw new Error("The parameter 'indice' must be defined and cannot be null.");
+        else
+            url_ += "indice=" + encodeURIComponent("" + indice) + "&"; 
+        if (tamanoPagina === undefined || tamanoPagina === null)
+            throw new Error("The parameter 'tamanoPagina' must be defined and cannot be null.");
+        else
+            url_ += "tamanoPagina=" + encodeURIComponent("" + tamanoPagina) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetPaginatedInvoices(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetPaginatedInvoices(response_);
+                } catch (e) {
+                    return <Observable<CK_Header807[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<CK_Header807[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetPaginatedInvoices(response: Response): Observable<CK_Header807[]> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CK_Header807.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<CK_Header807[]>(<any>null);
+    }
+    
     /**
      * @return OK
      */

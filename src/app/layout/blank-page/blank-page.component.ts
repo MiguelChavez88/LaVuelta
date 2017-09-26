@@ -18,7 +18,7 @@ export class BlankPageComponent implements OnInit {
     }
 
     cargarDatos(){
-       this._invoiceService.invoice()
+       this._invoiceService.getPaginatedInvoices(1, 10)
         .subscribe((result) => {
             this.Ck_InvoiceList = result;
         })
